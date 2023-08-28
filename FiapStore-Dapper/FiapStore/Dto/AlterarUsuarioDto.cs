@@ -1,6 +1,6 @@
-﻿namespace FiapStore.Entidade
+﻿namespace FiapStore.Dto
 {
-    public class Usuario
+    public class AlterarUsuarioDto
     {
         public int Id { get; set; }
         public string Nome { get; set; }
