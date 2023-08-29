@@ -10,10 +10,13 @@ namespace FiapStore.Controllers
     public class UsuarioController: ControllerBase
     {
         private IUsuarioRepository _usuarioRepository;
+        private readonly ILogger<UsuarioController> _logger;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository)
+        public UsuarioController(IUsuarioRepository usuarioRepository, 
+            ILogger<UsuarioController> logger)
         {
             _usuarioRepository = usuarioRepository;
+            _logger = logger;
         }
 
         [HttpGet("obter-todos-com-pedidos/{id}")]
@@ -26,12 +29,24 @@ namespace FiapStore.Controllers
         [HttpGet("obter-usuario-usuario")]
         public IActionResult ObterTodosUsuario()
         {
-            return Ok(_usuarioRepository.ObterTodos());
+            try
+            {
+                //throw new Exception("DEU MERDA!");
+                return Ok(_usuarioRepository.ObterTodos());
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex, $"{DateTime.Now} | Exception forçada para testes: {ex.Message}");
+                return BadRequest();
+            }
+            
         }
 
         [HttpGet("obter-por-usuario-id/{id}")]
         public IActionResult ObterPorUsuarioId(int id)
         {
+            _logger.LogInformation("Executando método ObterPorUsuarioId");
             return Ok(_usuarioRepository.ObterPorId(id));
         }
 
@@ -39,7 +54,9 @@ namespace FiapStore.Controllers
         public IActionResult CadastrarUsuario(CadastrarUsuarioDto usuarioDto)
         {
             _usuarioRepository.Cadastrar(new Usuario(usuarioDto));
-            return Ok("Usuário criado com sucesso!");
+            var mensagem = $"Usuário criado com sucesso! | Nome: {usuarioDto.Nome}";
+            _logger.LogWarning(mensagem);
+            return Ok(mensagem);
         }
 
         [HttpPut]
