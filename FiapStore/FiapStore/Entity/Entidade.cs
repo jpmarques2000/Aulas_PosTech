@@ -1,4 +1,5 @@
-﻿namespace FiapStore.Entity
+﻿
+namespace FiapStore.Entity
 {
     public class Entidade
     {
