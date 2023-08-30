@@ -5,6 +5,7 @@ using FiapStore.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,11 +17,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "My API",
-        Version = "v1"
-    });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FiapStore", Version = "v1" });
+    var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlpath = Path.Combine(AppContext.BaseDirectory, xmlfile);
+    c.IncludeXmlComments(xmlpath);
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -85,6 +86,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseReDoc(c =>
+{
+    c.DocumentTitle = "REDOC FiapStore API";
+    c.RoutePrefix = "";
+});
 
 app.UseHttpsRedirection();
 

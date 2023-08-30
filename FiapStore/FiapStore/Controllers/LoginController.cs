@@ -18,6 +18,17 @@ namespace FiapStore.Controllers
             _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// Realizar autenticação no sistema
+        /// </summary>
+        /// <param name="usuarioDto"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Insira nome de usuário e senha 
+        /// </remarks>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [HttpPost]
         public IActionResult Autenticar([FromBody] LoginDto usuarioDto)
         {

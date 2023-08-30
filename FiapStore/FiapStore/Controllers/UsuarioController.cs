@@ -21,14 +21,33 @@ namespace FiapStore.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtém todos os usuários com pedido
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Exemplo:
+        /// 
+        /// Enviar Id para requisição
+        /// </remarks>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [Authorize]
         [HttpGet("obter-todos-com-pedidos/{id}")]
-
         public IActionResult ObterTodosComPedidos(int id)
         {
             return Ok(_usuarioRepository.ObterComPedidos(id));
         }
 
+        /// <summary>
+        /// Obtém todos os usuários cadastrados no sistema
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [Authorize]
         [Authorize(Roles = $"{Permissoes.Administrador}, {Permissoes.Funcionario}")]
         [HttpGet("obter-usuario-usuario")]
@@ -48,6 +67,17 @@ namespace FiapStore.Controllers
             
         }
 
+        /// <summary>
+        /// Obtém usuário cadastrado por id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Enviar Id do usuário para realizar a requisição
+        /// </remarks>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [Authorize]
         [Authorize(Roles = Permissoes.Administrador)]
         [HttpGet("obter-por-usuario-id/{id}")]
@@ -57,6 +87,19 @@ namespace FiapStore.Controllers
             return Ok(_usuarioRepository.ObterPorId(id));
         }
 
+        /// <summary>
+        /// Realizar o cadastro de um novo usuário
+        /// </summary>
+        /// <param name="usuarioDto"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Dados:
+        /// 
+        /// Nome, Nome de usuário, senha e nível de permissão
+        /// </remarks>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [Authorize]
         [Authorize(Roles = $"{Permissoes.Administrador}, {Permissoes.Funcionario}")]
         [HttpPost]
@@ -68,6 +111,19 @@ namespace FiapStore.Controllers
             return Ok(mensagem);
         }
 
+        /// <summary>
+        /// Alterar dados de usuário existente
+        /// </summary>
+        /// <param name="usuarioDto"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Dados:
+        /// 
+        /// Id do usuário a ser alterado e novo nome
+        /// </remarks>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [HttpPut]
         public IActionResult AlterarUsuario(AlterarUsuarioDto usuarioDto)
         {
@@ -75,6 +131,17 @@ namespace FiapStore.Controllers
             return Ok("Usuário alterado com sucesso!");
         }
 
+        /// <summary>
+        /// Excluir usuário
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Inserir Id do usuário a ser excluído
+        /// </remarks>
+        /// <response code="200">Retorna Sucesso</response>
+        /// <response code="401">Não Autenticado</response>
+        /// <response code="403">Não Autorizado | Sem permissão</response>
         [HttpDelete("{id}")]
         public IActionResult DeletarUsuario(int id)
         {
