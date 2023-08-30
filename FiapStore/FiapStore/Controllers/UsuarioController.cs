@@ -1,6 +1,8 @@
 ﻿using FiapStore.Dto;
 using FiapStore.Entity;
+using FiapStore.Enums;
 using FiapStore.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiapStore.Controllers
@@ -19,6 +21,7 @@ namespace FiapStore.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("obter-todos-com-pedidos/{id}")]
 
         public IActionResult ObterTodosComPedidos(int id)
@@ -26,6 +29,8 @@ namespace FiapStore.Controllers
             return Ok(_usuarioRepository.ObterComPedidos(id));
         }
 
+        [Authorize]
+        [Authorize(Roles = $"{Permissoes.Administrador}, {Permissoes.Funcionario}")]
         [HttpGet("obter-usuario-usuario")]
         public IActionResult ObterTodosUsuario()
         {
@@ -43,6 +48,8 @@ namespace FiapStore.Controllers
             
         }
 
+        [Authorize]
+        [Authorize(Roles = Permissoes.Administrador)]
         [HttpGet("obter-por-usuario-id/{id}")]
         public IActionResult ObterPorUsuarioId(int id)
         {
@@ -50,6 +57,8 @@ namespace FiapStore.Controllers
             return Ok(_usuarioRepository.ObterPorId(id));
         }
 
+        [Authorize]
+        [Authorize(Roles = $"{Permissoes.Administrador}, {Permissoes.Funcionario}")]
         [HttpPost]
         public IActionResult CadastrarUsuario(CadastrarUsuarioDto usuarioDto)
         {

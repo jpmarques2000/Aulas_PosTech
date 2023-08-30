@@ -22,5 +22,13 @@ namespace FiapStore.Repository
                     return usuario;
                 }).FirstOrDefault();
         }
+
+        //Apenas para teste local, recomendado realizar login com criptografia, serviços de secrets.
+        //Não realizar comparação direta com a senha
+        public Usuario ObterPorNomeUsuarioESenha(string nomeUsuario, string senha)
+        {
+            return _context.Usuario.FirstOrDefault(usuario => 
+                usuario.NomeUsuario == nomeUsuario && usuario.Senha == senha);
+        }
     }
 }
